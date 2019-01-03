@@ -28,11 +28,14 @@ class FileUploadHttpHook(HttpHook):
     def __init__(self, method='POST', http_conn_id='http_default'):
         super().__init__(method=method, http_conn_id=http_conn_id)
 
-    def run(self, endpoint, data=None, files=None, headers=None, extra_options=None):
+    def run(self, endpoint, params=None, data=None, files=None, headers=None, extra_options=None):
         """
         Performs the request
         :param endpoint: the endpoint to be called i.e. resource/v1/query?
         :type endpoint: str
+        :param params: URL parameters to append to the URL. If a dictionary or
+            list of tuples ``[(key, value)]`` is provided, form-encoding will
+            take place.
         :param data: payload to be uploaded or request parameters
         :type data: dict
         :param files: files to be uploaded
@@ -69,6 +72,7 @@ class FileUploadHttpHook(HttpHook):
             # Others use data
             req = requests.Request(self.method,
                                    url,
+                                   params=params,
                                    data=data,
                                    files=files,
                                    headers=headers)
